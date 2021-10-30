@@ -1,0 +1,6 @@
+exports_files(
+  [
+    "index.bzl"
+  ],
+  visibility = ["//visibility:public"]
+)

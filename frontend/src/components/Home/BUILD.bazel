@@ -1,0 +1,25 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
+load("@npm//sass:index.bzl", "sass")
+
+package(default_visibility = ["//frontend:__subpackages__"])
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    deps = ["//frontend:tsconfig.base.json",]
+)
+
+ts_project(
+    name = "Home",
+    srcs = [
+        "index.tsx",
+    ],
+    deps = [
+        "@npm//@types",
+        "//frontend/src/components/Title"
+    ],
+    tsconfig = ":tsconfig",
+    extends = "//frontend:tsconfig.base.json",
+    composite = True,
+    resolve_json_module = True,
+)
