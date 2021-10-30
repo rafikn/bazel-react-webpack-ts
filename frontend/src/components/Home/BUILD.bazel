@@ -1,5 +1,4 @@
 load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
-load("@npm//sass:index.bzl", "sass")
 
 package(default_visibility = ["//frontend:__subpackages__"])
 

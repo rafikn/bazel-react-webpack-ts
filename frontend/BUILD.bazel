@@ -2,32 +2,44 @@ load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
 load("@npm//webpack-cli:index.bzl", webpack = "webpack_cli")
 load("@npm//http-server:index.bzl", dev_server = "http_server")
 
+ROOT = [
+    "//frontend:root",
+]
+
+COMPONENTS = [
+    "//frontend/src/components/Home",
+]
+
+STYLES = [
+    "//frontend/src/components/Title:styles.css",
+]
+
 # Expose those targets as they are required as part of
 # other packages builds and need to be included as inputs
 exports_files(
-  [
-    "tsconfig.base.json",
-    "package.json"
-  ],
-  visibility = ["//visibility:public"]
+    [
+        "types/styles.d.ts",
+        "tsconfig.base.json",
+        "package.json",
+    ],
+    visibility = ["//frontend:__subpackages__"],
 )
 
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",
-    deps = ["//frontend:tsconfig.base.json",]
+    deps = ["//frontend:tsconfig.base.json"],
 )
 
 ts_project(
     name = "root",
-    tsconfig = ":tsconfig",
-    supports_workers = True,
     srcs = [
         "src/root.tsx",
     ],
-    deps = [
+    supports_workers = True,
+    tsconfig = ":tsconfig",
+    deps = COMPONENTS + [
         "@npm//@types",
-        "//frontend/src/components/Home",
     ],
 )
 
@@ -38,12 +50,11 @@ webpack(
         "./$(locations :root)",
         "--config",
         "./$(execpath webpack.config.js)",
-        "--stats-error-details",
         "-o",
         "$@",
     ],
-    data = [
-        ":root",
+    data = ROOT +
+           STYLES + [
         "webpack.config.js",
         "@npm//:node_modules",
     ],
@@ -51,16 +62,16 @@ webpack(
 
 filegroup(
     name = "index",
-    srcs =[
-        "public/index.html"
-    ]
+    srcs = [
+        "public/index.html",
+    ],
 )
 
 dev_server(
     name = "server",
     data = [
+        ":index",
         ":public/dist",
-        ":index"
     ],
     templated_args = ["./frontend/public"],
 )

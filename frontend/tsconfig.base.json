@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "paths": {
-        // Setup @kbn paths for Bazel compilations
+        // Setup @components paths for Bazel compilations
         "@components/*": [
           "../bazel-out/darwin-fastbuild/bin/frontend/src/components/*",
           "../bazel-out/k8-fastbuild/bin/frontend/src/components/*",
@@ -29,7 +29,7 @@
         "esnext",
         // includes support for browser APIs
         "dom",
-        "DOM.Iterable"
+        "DOM"
       ],
       // Node 8 should support everything output by esnext, we override this
       // in webpack with loader-level compiler options
@@ -61,6 +61,6 @@
       // adding global typings
       "types": [
         "node"
-      ]
+      ],
     }
   }

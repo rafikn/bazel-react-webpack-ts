@@ -3,22 +3,43 @@ load("@npm//sass:index.bzl", "sass")
 
 package(default_visibility = ["//frontend:__subpackages__"])
 
+TSCONFIG_BASE = "//frontend:tsconfig.base.json"
+
+SRCS = [
+    "index.tsx",
+    "styles.css",
+    "//frontend/src/types:styles.d.ts"
+]
+
+DEPS = [
+    "@npm//@types",
+    "@npm//csstype",
+]
+
+sass(
+    name = "styles",
+    outs = ["styles.css"],
+    args = [
+        "$(execpath styles.scss)",
+        "$(execpath styles.css)",
+    ],
+    data = ["styles.scss"],
+)
+
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",
-    deps = ["//frontend:tsconfig.base.json",]
+    deps = [
+        TSCONFIG_BASE,
+    ]
 )
 
 ts_project(
     name = "Title",
-    srcs = [
-        "index.tsx",
-    ],
-    deps = [
-        "@npm//@types",
-    ],
+    srcs = SRCS,
+    deps = DEPS,
     tsconfig = ":tsconfig",
-    extends = "//frontend:tsconfig.base.json",
+    extends = TSCONFIG_BASE,
     composite = True,
     declaration = True,
     resolve_json_module = True,

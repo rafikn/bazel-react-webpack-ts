@@ -4,6 +4,7 @@
       "declaration": true
     },
     "include": [
-      "."
+      ".",
+      "../../../src/types/styles.d.ts"
     ]
 }
