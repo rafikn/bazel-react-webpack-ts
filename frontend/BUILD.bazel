@@ -1,6 +1,5 @@
 load("@npm//@bazel/typescript:index.bzl", "ts_config", "ts_project")
 load("@npm//webpack-cli:index.bzl", webpack = "webpack_cli")
-load("//frontend/bazel:index.bzl", sources ="esmodule_sources")
 load("@npm//http-server:index.bzl", dev_server = "http_server")
 
 # Expose those targets as they are required as part of
@@ -30,13 +29,6 @@ ts_project(
         "@npm//@types",
         "//frontend/src/components/Home",
     ],
-)
-
-sources(
-    name = "js",
-    deps = [ 
-        ":root",
-    ]
 )
 
 webpack(
